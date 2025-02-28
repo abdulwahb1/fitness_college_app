@@ -29,11 +29,17 @@ export default function LandingScreen() {
             <Text style={styles.title}>Home workouts</Text>
 
             <View style={styles.buttonContainer}>
-              <Pressable style={[styles.button, styles.joinButton]}>
+              <Pressable
+                style={[styles.button, styles.joinButton]}
+                onPress={() => router.push("/signup")}
+              >
                 <Text style={styles.joinText}>Join</Text>
               </Pressable>
 
-              <Pressable style={[styles.button, styles.loginButton]}>
+              <Pressable
+                style={[styles.button, styles.loginButton]}
+                onPress={() => router.push("/signin")}
+              >
                 <Text style={styles.loginText}>Login</Text>
               </Pressable>
             </View>

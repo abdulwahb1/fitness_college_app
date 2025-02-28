@@ -4,7 +4,6 @@ import { TextInput } from "react-native";
 import { Link, router } from "expo-router";
 import { supabase } from "../lib/supabase";
 import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
@@ -21,16 +20,16 @@ export default function SignInScreen() {
     if (error) {
       Alert.alert(error.message);
     } else {
-      router.replace("/dashboard"); // Navigate to your app's main screen
+      router.replace("/(tabs)/dashboard"); // Navigate to your app's main screen
     }
     setLoading(false);
   }
 
   return (
-    <SafeAreaView>
+    <View style={styles.container}>
       <View style={styles.content}>
         <Ionicons name="barbell-outline" size={40} color="white" />
-        <Text style={styles.title}>Welcome back!</Text>
+        <Text style={styles.title}>Your Account</Text>
 
         <View style={styles.form}>
           <TextInput
@@ -53,6 +52,16 @@ export default function SignInScreen() {
             autoCapitalize="none"
           />
 
+          <Pressable onPress={() => {}}>
+            <Text style={styles.forgotPassword}>forgotten your password?</Text>
+          </Pressable>
+
+          <Text style={styles.terms}>
+            By logging in, you agree to our{" "}
+            <Text style={styles.link}>Privacy Policy</Text> and{" "}
+            <Text style={styles.link}>Terms to use</Text>
+          </Text>
+
           <Pressable
             style={[styles.button, loading && styles.buttonDisabled]}
             onPress={signInWithEmail}
@@ -60,11 +69,6 @@ export default function SignInScreen() {
           >
             <Text style={styles.buttonText}>Sign In</Text>
           </Pressable>
-          <Text style={styles.terms}>
-            By logging in, you agree to our{" "}
-            <Text style={styles.link}>Privacy Policy</Text> and{" "}
-            <Text style={styles.link}>Terms to use</Text>
-          </Text>
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Not a member? </Text>
@@ -76,7 +80,7 @@ export default function SignInScreen() {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -84,7 +88,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1a1a1a",
-    paddingTop: 60,
   },
   content: {
     flex: 1,

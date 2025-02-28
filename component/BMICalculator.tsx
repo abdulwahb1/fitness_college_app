@@ -19,9 +19,8 @@ const BMICalculator = ({
   const [weight, setWeight] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [bmiResult, setBmiResult] = useState<string | null>(null);
-  console.log(bmiResult);
-  console.log(age, height, weight, gender);
   const [name, setName] = useState<string>("");
+
   const validateForm = () => {
     if (!age || !height || !weight || !gender) {
       alert("All fields are required!");
