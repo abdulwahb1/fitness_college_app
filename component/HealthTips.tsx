@@ -70,16 +70,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#2a2a2a",
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 16,
-    color: "#333",
+    color: "#fff",
   },
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "#333333",
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 4,
-    color: "#333",
+    color: "#fff",
   },
   description: {
     fontSize: 14,
-    color: "#666",
+    color: "#888",
     lineHeight: 20,
   },
 });

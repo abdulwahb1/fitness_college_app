@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#2a2a2a",
   },
   content: {
     flex: 1,
@@ -86,10 +86,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginTop: 10,
-    color: "#333",
+    color: "#fff",
   },
   infoButton: {
-    backgroundColor: "#fff",
+    backgroundColor: "#333333",
     borderRadius: 10,
     padding: 15,
     width: "100%",
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 16,
-    color: "#333",
+    color: "#fff",
   },
 });
 

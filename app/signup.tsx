@@ -9,7 +9,7 @@ export default function SignUpScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [name, setName] = useState("");
   async function signUpWithEmail() {
     setLoading(true);
     const {
@@ -18,6 +18,11 @@ export default function SignUpScreen() {
     } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          name,
+        },
+      },
     });
 
     if (error) {
@@ -36,6 +41,14 @@ export default function SignUpScreen() {
         <Text style={styles.title}>Create Account</Text>
 
         <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            placeholderTextColor="#666"
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="none"
+          />
           <TextInput
             style={styles.input}
             placeholder="Email address"

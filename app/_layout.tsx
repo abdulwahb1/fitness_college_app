@@ -33,12 +33,20 @@ export default function RootLayout() {
             name="daily-workout"
             options={{
               title: "Daily Workout",
+              headerStyle: {
+                backgroundColor: "#1a1a1a",
+              },
+              headerTintColor: "#fff",
             }}
           />
           <Stack.Screen
             name="health-tips"
             options={{
               title: "Health Tips",
+              headerStyle: {
+                backgroundColor: "#1a1a1a",
+              },
+              headerTintColor: "#fff",
             }}
           />
         </Stack>

@@ -11,144 +11,31 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
-
+import { BlurView } from "@react-native-community/blur";
+import WorkoutCard from "@/component/dashboard/WorkoutCard";
+import UserStatsCard from "@/component/dashboard/UserStatsCard";
+import { getHealthStatus, getHealthTips } from "@/lib/bmi-calculator";
 const HomeScreen = () => {
   const navigation = useNavigation();
   // Sample user data - in a real app, this would come from your state/context
   const [userData, setUserData] = useState({
     weight: 70, // in kg
-    height: 175, // in cm
+    height: 165, // in cm
     bmi: 22.9, // calculated BMI
     bmiCategory: "Normal weight",
   });
 
-  // Function to determine health status message and color based on BMI
-  const getHealthStatus = () => {
-    const { bmi } = userData;
-
-    if (bmi < 18.5) {
-      return {
-        message:
-          "You are underweight. Focus on nutrient-rich foods to gain healthy weight.",
-        color: "#FFC107", // Warning yellow
-        icon: "alert-triangle",
-      };
-    } else if (bmi >= 18.5 && bmi < 25) {
-      return {
-        message: "Your weight is normal. Maintain your healthy lifestyle!",
-        color: "#4CAF50", // Success green
-        icon: "check-circle",
-      };
-    } else if (bmi >= 25 && bmi < 30) {
-      return {
-        message: "You are overweight. Consider increasing physical activity.",
-        color: "#FF9800", // Warning orange
-        icon: "alert-circle",
-      };
-    } else {
-      return {
-        message:
-          "You are in the obesity range. Please consult with a healthcare professional.",
-        color: "#F44336", // Danger red
-        icon: "alert-octagon",
-      };
-    }
-  };
-
-  const healthStatus = getHealthStatus();
+  const healthStatus = getHealthStatus(userData || {});
 
   // Health tips based on BMI category
-  const getHealthTips = () => {
-    const { bmiCategory } = userData;
-
-    switch (bmiCategory) {
-      case "Underweight":
-        return [
-          "Eat more frequently throughout the day",
-          "Include protein-rich foods in every meal",
-          "Add healthy fats like avocados and nuts to your diet",
-        ];
-      case "Normal weight":
-        return [
-          "Maintain a balanced diet with plenty of fruits and vegetables",
-          "Stay hydrated by drinking at least 8 glasses of water daily",
-          "Aim for 150 minutes of moderate exercise weekly",
-        ];
-      case "Overweight":
-        return [
-          "Focus on portion control during meals",
-          "Increase daily physical activity",
-          "Reduce intake of processed foods and sugary drinks",
-        ];
-      case "Obese":
-        return [
-          "Consult with a healthcare provider for personalized advice",
-          "Start with gentle exercise like walking",
-          "Keep a food journal to track eating habits",
-        ];
-      default:
-        return [
-          "Maintain a balanced diet",
-          "Stay active with regular exercise",
-          "Get adequate sleep each night",
-        ];
-    }
-  };
 
   return (
     <ScrollView style={styles.container}>
       {/* Workout Card Section */}
-      <TouchableOpacity
-        style={styles.workoutCard}
-        onPress={() => router.push("/daily-workout")}
-      >
-        <View style={styles.workoutCardContent}>
-          <View>
-            <Text style={styles.workoutCardTitle}>Today's Workout Plan</Text>
-            <Text style={styles.workoutCardDescription}>
-              5 exercises tailored to your fitness level
-            </Text>
-            <View style={styles.workoutCardMeta}>
-              <View style={styles.metaItem}>
-                <Feather name="clock" size={14} color="#fff" />
-                <Text style={styles.metaText}>30 min</Text>
-              </View>
-              <View style={styles.metaItem}>
-                <Feather name="zap" size={14} color="#fff" />
-                <Text style={styles.metaText}>250 cal</Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.workoutCardIcon}>
-            <Feather name="arrow-right-circle" size={36} color="#fff" />
-          </View>
-        </View>
-      </TouchableOpacity>
+      <WorkoutCard />
       {/* User Stats Section */}
 
-      <View style={styles.statsContainer}>
-        <Text style={styles.header}>Your Health Stats</Text>
-
-        <View style={styles.statsGrid}>
-          <View style={styles.statCard}>
-            <Feather name="user" size={24} color="#4CAF50" />
-            <Text style={styles.statValue}>{userData.weight} kg</Text>
-            <Text style={styles.statLabel}>Weight</Text>
-          </View>
-
-          <View style={styles.statCard}>
-            <Feather name="arrow-up" size={24} color="#4CAF50" />
-            <Text style={styles.statValue}>{userData.height} cm</Text>
-            <Text style={styles.statLabel}>Height</Text>
-          </View>
-
-          <View style={styles.statCard}>
-            <Feather name="activity" size={24} color="#4CAF50" />
-            <Text style={styles.statValue}>{userData.bmi.toFixed(1)}</Text>
-            <Text style={styles.statLabel}>BMI</Text>
-          </View>
-        </View>
-      </View>
+      <UserStatsCard userData={userData || {}} />
 
       {/* Health Alert Section */}
       <View
@@ -180,7 +67,7 @@ const HomeScreen = () => {
       {/* Personalized Tips Section */}
       <View style={styles.tipsContainer}>
         <Text style={styles.tipsHeader}>Personalized Tips</Text>
-        {getHealthTips().map((tip, index) => (
+        {getHealthTips(userData || {}).map((tip, index) => (
           <View key={index} style={styles.tipItem}>
             <Feather name="check" size={16} color="#4CAF50" />
             <Text style={styles.tipText}>{tip}</Text>
@@ -189,7 +76,7 @@ const HomeScreen = () => {
       </View>
 
       {/* Update Stats Button */}
-      <TouchableOpacity style={styles.updateButton}>
+      {/* <TouchableOpacity style={styles.updateButton}>
         <Feather
           name="edit-2"
           size={18}
@@ -197,7 +84,7 @@ const HomeScreen = () => {
           style={styles.updateButtonIcon}
         />
         <Text style={styles.updateButtonText}>Update My Stats</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </ScrollView>
   );
 };
@@ -205,47 +92,12 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#2a2a2a",
     padding: 16,
   },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: "#333",
-  },
-  statsContainer: {
-    marginBottom: 20,
-  },
-  statsGrid: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  statCard: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 16,
-    alignItems: "center",
-    width: "30%",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  statValue: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 8,
-    color: "#333",
-  },
-  statLabel: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 4,
-  },
+
   alertContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "#333333",
     borderRadius: 12,
     marginBottom: 20,
     overflow: "hidden",
@@ -270,11 +122,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 4,
-    color: "#333",
+    color: "#fff",
   },
   alertMessage: {
     fontSize: 14,
-    color: "#666",
+    color: "#888",
     marginBottom: 12,
     lineHeight: 20,
   },
@@ -290,7 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   tipsContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "#333333",
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
@@ -304,7 +156,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 12,
-    color: "#333",
+    color: "#fff",
   },
   tipItem: {
     flexDirection: "row",
@@ -313,72 +165,10 @@ const styles = StyleSheet.create({
   },
   tipText: {
     fontSize: 14,
-    color: "#666",
+    color: "#888",
     marginLeft: 8,
     flex: 1,
     lineHeight: 20,
-  },
-  workoutCard: {
-    backgroundColor: "#4CAF50",
-    borderRadius: 12,
-    marginBottom: 20,
-    overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  workoutCardContent: {
-    padding: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  workoutCardTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
-    marginBottom: 8,
-  },
-  workoutCardDescription: {
-    fontSize: 14,
-    color: "rgba(255, 255, 255, 0.8)",
-    marginBottom: 12,
-  },
-  workoutCardMeta: {
-    flexDirection: "row",
-  },
-  metaItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 16,
-  },
-  metaText: {
-    fontSize: 14,
-    color: "#fff",
-    marginLeft: 4,
-  },
-  workoutCardIcon: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  updateButton: {
-    backgroundColor: "#2196F3",
-    borderRadius: 8,
-    padding: 16,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
-  },
-  updateButtonIcon: {
-    marginRight: 8,
-  },
-  updateButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
   },
 });
 

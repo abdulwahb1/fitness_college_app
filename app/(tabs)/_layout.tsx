@@ -4,11 +4,20 @@ import { Session } from "@supabase/supabase-js";
 import { Tabs } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
-
+import { StatusBar } from "react-native";
 export default function TabLayout() {
   return (
     <View style={styles.container}>
-      <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
+      <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
+      {/* <StatusBar barStyle="dark-content" backgroundColor="#1a1a1a" /> */}
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: "#4CAF50",
+          tabBarStyle: {
+            backgroundColor: "#1a1a1a",
+          },
+        }}
+      >
         <Tabs.Screen
           name="index"
           options={{
@@ -26,6 +35,10 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <FontAwesome size={28} name="home" color={color} />
             ),
+            headerStyle: {
+              backgroundColor: "#1a1a1a",
+            },
+            headerTintColor: "#fff",
           }}
         />
         <Tabs.Screen
@@ -35,6 +48,10 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <FontAwesome size={28} name="cog" color={color} />
             ),
+            headerStyle: {
+              backgroundColor: "#1a1a1a",
+            },
+            headerTintColor: "#fff",
           }}
         />
       </Tabs>

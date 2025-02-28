@@ -133,13 +133,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#2a2a2a",
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 16,
-    color: "#333",
+    color: "#fff",
   },
   progressContainer: {
     marginBottom: 20,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   workoutCard: {
-    backgroundColor: "#fff",
+    backgroundColor: "#333333",
     borderRadius: 12,
     marginBottom: 16,
     overflow: "hidden",
@@ -193,11 +193,11 @@ const styles = StyleSheet.create({
   workoutTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    color: "#fff",
   },
   workoutDescription: {
     fontSize: 14,
-    color: "#666",
+    color: "#888",
     marginBottom: 12,
     lineHeight: 20,
   },
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   metaText: {
     fontSize: 14,
-    color: "#666",
+    color: "#888",
     marginLeft: 4,
   },
 });

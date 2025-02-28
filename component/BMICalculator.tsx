@@ -19,7 +19,6 @@ const BMICalculator = ({
   const [weight, setWeight] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [bmiResult, setBmiResult] = useState<string | null>(null);
-  const [name, setName] = useState<string>("");
 
   const validateForm = () => {
     if (!age || !height || !weight || !gender) {
@@ -58,16 +57,6 @@ const BMICalculator = ({
   return (
     <View style={styles.container}>
       <View style={styles.form}>
-        <View style={styles.inputRow}>
-          <Text style={styles.label}>Name</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your name"
-            onChangeText={setName}
-            value={name}
-            keyboardType="numeric"
-          />
-        </View>
         <View style={styles.inputRow}>
           <Text style={styles.label}>Age</Text>
           <TextInput
