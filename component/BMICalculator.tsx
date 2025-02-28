@@ -8,73 +8,82 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-
+import { supabase } from "@/lib/supabase";
+import { User } from "@/types/user";
+import { useAuth } from "@/context/AuthContext";
 const BMICalculator = ({
   setIsModalVisible,
+  fetchUserData,
 }: {
   setIsModalVisible: (visible: boolean) => void;
+  fetchUserData: () => void;
 }) => {
-  const [age, setAge] = useState<string>("");
-  const [height, setHeight] = useState<string>("");
-  const [weight, setWeight] = useState<string>("");
-  const [gender, setGender] = useState<string>("");
-  const [bmiResult, setBmiResult] = useState<string | null>(null);
+  const { user } = useAuth();
+  const [userData, setUserData] = useState<User>({
+    height: "",
+    weight: "",
+    bmi: "",
+  });
 
+  console.log(userData);
   const validateForm = () => {
-    if (!age || !height || !weight || !gender) {
+    if (!userData.height || !userData.weight) {
       alert("All fields are required!");
       return;
     }
-    setIsModalVisible(false);
     countBmi();
+    setIsModalVisible(false);
   };
 
-  const countBmi = () => {
-    const h = Number(height) / 100;
-    const w = Number(weight);
+  const countBmi = async () => {
+    const h = Number(userData.height) / 100;
+    const w = Number(userData.weight);
     if (h <= 0 || w <= 0) {
       alert("Height and weight must be positive numbers!");
       return;
     }
 
     const bmi = (w / (h * h)).toFixed(2);
-    let result = "Extremely obese";
+    console.log(bmi);
 
-    if (Number(bmi) < 18.5) result = "Underweight";
-    else if (Number(bmi) < 25) result = "Healthy";
-    else if (Number(bmi) < 30) result = "Overweight";
-    else if (Number(bmi) < 35) result = "Obese";
+    const newUserData = {
+      height: userData.height,
+      weight: userData.weight,
+      bmi: bmi,
+    };
 
-    setBmiResult(bmi);
+    // Push data to Supabase
+    const { data, error } = await supabase
+      .from("profiles")
+      .insert([newUserData])
+      .eq("id", user?.id);
 
-    // Reset the form
-    setAge("");
-    setHeight("");
-    setWeight("");
-    setGender("");
+    if (error) {
+      console.error("Error inserting data:", error.message);
+      alert("Failed to save BMI data!");
+    } else {
+      console.log("Data inserted successfully:", data);
+      alert("BMI data saved!");
+
+      // Reset form
+      setUserData({ height: "", weight: "", bmi: "" });
+
+      fetchUserData();
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.form}>
         <View style={styles.inputRow}>
-          <Text style={styles.label}>Age</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your age"
-            onChangeText={setAge}
-            value={age}
-            keyboardType="numeric"
-          />
-        </View>
-        <View style={styles.inputRow}>
           <Text style={styles.label}>Height (cm)</Text>
           <TextInput
             style={styles.textInput}
             placeholder="Enter your height"
-            onChangeText={setHeight}
-            value={height}
+            onChangeText={(text) => setUserData({ ...userData, height: text })}
+            value={userData.height}
             keyboardType="numeric"
+            placeholderTextColor="#777"
           />
         </View>
         <View style={styles.inputRow}>
@@ -82,38 +91,19 @@ const BMICalculator = ({
           <TextInput
             style={styles.textInput}
             placeholder="Enter your weight"
-            onChangeText={setWeight}
-            value={weight}
+            onChangeText={(text) => setUserData({ ...userData, weight: text })}
+            value={userData.weight}
             keyboardType="numeric"
+            placeholderTextColor="#777"
           />
-        </View>
-        <View style={styles.genderRow}>
-          <TouchableOpacity
-            style={[
-              styles.genderButton,
-              gender === "male" && styles.selectedGender,
-            ]}
-            onPress={() => setGender("male")}
-          >
-            <Text style={styles.genderText}>Male</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.genderButton,
-              gender === "female" && styles.selectedGender,
-            ]}
-            onPress={() => setGender("female")}
-          >
-            <Text style={styles.genderText}>Female</Text>
-          </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.submitButton} onPress={validateForm}>
           <Text style={styles.submitButtonText}>Calculate BMI</Text>
         </TouchableOpacity>
-        {bmiResult && (
+        {userData.bmi && (
           <View style={styles.resultContainer}>
             <Text style={styles.resultLabel}>BMI:</Text>
-            <Text style={styles.resultText}>{bmiResult}</Text>
+            <Text style={styles.resultText}>{userData.bmi}</Text>
           </View>
         )}
       </View>
@@ -129,7 +119,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   form: {
-    backgroundColor: "#fff",
+    backgroundColor: "#2a2a2a",
     borderRadius: 20,
     padding: 20,
     width: "90%",
@@ -146,6 +136,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginRight: 10,
+    color: "#fff",
   },
   textInput: {
     flex: 2,
@@ -155,32 +146,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 10,
     fontSize: 16,
-  },
-  genderRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  genderButton: {
-    flex: 1,
-    height: 40,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#dbeffe",
-    padding: 10,
-    margin: 10,
-  },
-  selectedGender: {
-    backgroundColor: "#289df6",
-  },
-  genderText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
+    backgroundColor: "#333333",
+    color: "#fff",
   },
   submitButton: {
-    backgroundColor: "#289df6",
+    backgroundColor: "#4CAF50",
     borderRadius: 10,
     height: 50,
     justifyContent: "center",

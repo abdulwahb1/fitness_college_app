@@ -7,7 +7,7 @@ export default function RootLayout() {
     <>
       <AuthProvider>
         {/* <StatusBar hidden /> */}
-        {/* <StatusBar barStyle="dark-content" backgroundColor="#4CAF50" /> */}
+        <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
 
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -21,12 +21,20 @@ export default function RootLayout() {
             name="signup"
             options={{
               headerShown: false,
+              headerStyle: {
+                backgroundColor: "#1a1a1a",
+              },
+              headerTintColor: "#fff",
             }}
           />
           <Stack.Screen
             name="signin"
             options={{
               headerShown: false,
+              headerStyle: {
+                backgroundColor: "#1a1a1a",
+              },
+              headerTintColor: "#fff",
             }}
           />
           <Stack.Screen
@@ -43,6 +51,16 @@ export default function RootLayout() {
             name="health-tips"
             options={{
               title: "Health Tips",
+              headerStyle: {
+                backgroundColor: "#1a1a1a",
+              },
+              headerTintColor: "#fff",
+            }}
+          />
+          <Stack.Screen
+            name="user-settings"
+            options={{
+              title: "User Settings",
               headerStyle: {
                 backgroundColor: "#1a1a1a",
               },

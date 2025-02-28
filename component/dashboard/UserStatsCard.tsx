@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { User } from "@/types/user";
 
-const UserStatsCard = ({ userData }: { userData: any }) => {
+const UserStatsCard = ({ userData }: { userData: User }) => {
   return (
     <>
       <View style={styles.statsContainer}>
@@ -23,7 +24,7 @@ const UserStatsCard = ({ userData }: { userData: any }) => {
 
           <View style={styles.statCard}>
             <Feather name="activity" size={24} color="#4CAF50" />
-            <Text style={styles.statValue}>{userData.bmi.toFixed(1)}</Text>
+            <Text style={styles.statValue}>{userData.bmi}</Text>
             <Text style={styles.statLabel}>BMI</Text>
           </View>
         </View>

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Modal,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
@@ -15,26 +16,60 @@ import { BlurView } from "@react-native-community/blur";
 import WorkoutCard from "@/component/dashboard/WorkoutCard";
 import UserStatsCard from "@/component/dashboard/UserStatsCard";
 import { getHealthStatus, getHealthTips } from "@/lib/bmi-calculator";
-const HomeScreen = () => {
-  const navigation = useNavigation();
-  // Sample user data - in a real app, this would come from your state/context
-  const [userData, setUserData] = useState({
-    weight: 70, // in kg
-    height: 165, // in cm
-    bmi: 22.9, // calculated BMI
-    bmiCategory: "Normal weight",
+import BMICalculator from "@/component/BMICalculator";
+import { supabase } from "@/lib/supabase";
+import { User } from "@/types/user";
+import { useAuth } from "@/context/AuthContext";
+const Dashboard = () => {
+  const { user } = useAuth();
+  const [userData, setUserData] = useState<User>({
+    weight: "", // in kg
+    height: "", // in cm
+    bmi: "", // calculated BMI
   });
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const fetchUserData = async () => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", user?.id);
+    console.log(data);
+    if (error) {
+      console.log("Supabase error:", error);
+      setIsModalVisible(true);
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      console.log("No user data found.");
+      setIsModalVisible(true);
+      return;
+    }
+    setUserData(data[0]);
+  };
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const healthStatus = getHealthStatus(userData || {});
 
-  // Health tips based on BMI category
-
   return (
     <ScrollView style={styles.container}>
+      <Modal visible={isModalVisible} transparent={true} animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <BMICalculator
+              setIsModalVisible={setIsModalVisible}
+              fetchUserData={fetchUserData}
+            />
+          </View>
+        </View>
+      </Modal>
+
       {/* Workout Card Section */}
       <WorkoutCard />
       {/* User Stats Section */}
-
       <UserStatsCard userData={userData || {}} />
 
       {/* Health Alert Section */}
@@ -74,17 +109,6 @@ const HomeScreen = () => {
           </View>
         ))}
       </View>
-
-      {/* Update Stats Button */}
-      {/* <TouchableOpacity style={styles.updateButton}>
-        <Feather
-          name="edit-2"
-          size={18}
-          color="#fff"
-          style={styles.updateButtonIcon}
-        />
-        <Text style={styles.updateButtonText}>Update My Stats</Text>
-      </TouchableOpacity> */}
     </ScrollView>
   );
 };
@@ -95,7 +119,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#2a2a2a",
     padding: 16,
   },
-
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.9)", // Semi-transparent black overlay
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    width: "90%",
+    flex: 1,
+  },
   alertContainer: {
     backgroundColor: "#333333",
     borderRadius: 12,
@@ -172,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default Dashboard;

@@ -25,9 +25,10 @@ export default function LandingScreen() {
       >
         <View style={styles.overlay}>
           <View style={styles.content}>
-            <Ionicons name="barbell-outline" size={40} color="white" />
-            <Text style={styles.title}>Home workouts</Text>
-
+            <View style={styles.logoContainer}>
+              <Ionicons name="barbell-outline" size={40} color="white" />
+              <Text style={styles.title}>Home workouts</Text>
+            </View>
             <View style={styles.buttonContainer}>
               <Pressable
                 style={[styles.button, styles.joinButton]}
@@ -63,6 +64,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
+  },
+  logoContainer: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     color: "white",

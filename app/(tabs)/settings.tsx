@@ -15,7 +15,7 @@ import {
 import { ChevronRight } from "lucide-react-native";
 const Settings = () => {
   const router = useRouter();
-  const { user } = useAuth();
+
   const signOut = async () => {
     await supabase.auth.signOut();
     router.replace("/signin");
@@ -33,7 +33,7 @@ const Settings = () => {
 
         <TouchableOpacity
           style={styles.infoButton}
-          onPress={() => router.push("/")}
+          onPress={() => router.push("/user-settings")}
         >
           <View style={styles.infoContent}>
             <Text style={styles.infoText}>Personal Information</Text>
