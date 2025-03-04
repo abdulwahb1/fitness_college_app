@@ -13,7 +13,7 @@ export const getHealthStatus = (userData: any) => {
   } else if (bmi >= 18.5 && bmi < 25) {
     return {
       message: "Your weight is normal. Maintain your healthy lifestyle!",
-      color: "#4CAF50", // Success green
+      color: "#FFD700", // Success green
       icon: "check-circle",
     };
   } else if (bmi >= 25 && bmi < 30) {

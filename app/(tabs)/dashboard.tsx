@@ -26,6 +26,8 @@ const Dashboard = () => {
     weight: "", // in kg
     height: "", // in cm
     bmi: "", // calculated BMI
+    firstName: "",
+    lastName: "",
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -104,7 +106,7 @@ const Dashboard = () => {
         <Text style={styles.tipsHeader}>Personalized Tips</Text>
         {getHealthTips(userData || {}).map((tip, index) => (
           <View key={index} style={styles.tipItem}>
-            <Feather name="check" size={16} color="#4CAF50" />
+            <Feather name="check" size={16} color="#FFD700" />
             <Text style={styles.tipText}>{tip}</Text>
           </View>
         ))}

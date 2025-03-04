@@ -11,19 +11,19 @@ const UserStatsCard = ({ userData }: { userData: User }) => {
 
         <View style={styles.statsGrid}>
           <View style={styles.statCard}>
-            <Feather name="user" size={24} color="#4CAF50" />
+            <Feather name="user" size={24} color="#FFD700" />
             <Text style={styles.statValue}>{userData.weight} kg</Text>
             <Text style={styles.statLabel}>Weight</Text>
           </View>
 
           <View style={styles.statCard}>
-            <Feather name="arrow-up" size={24} color="#4CAF50" />
+            <Feather name="arrow-up" size={24} color="#FFD700" />
             <Text style={styles.statValue}>{userData.height} cm</Text>
             <Text style={styles.statLabel}>Height</Text>
           </View>
 
           <View style={styles.statCard}>
-            <Feather name="activity" size={24} color="#4CAF50" />
+            <Feather name="activity" size={24} color="#FFD700" />
             <Text style={styles.statValue}>{userData.bmi}</Text>
             <Text style={styles.statLabel}>BMI</Text>
           </View>

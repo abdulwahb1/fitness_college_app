@@ -2,7 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { User } from "@/types/user";
 import { Button } from "@rneui/themed";
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -14,20 +14,26 @@ import {
   ScrollView,
   KeyboardTypeOptions,
   Alert,
+  Pressable,
 } from "react-native";
 
 const UserSettingsPage = () => {
+  const router = useRouter();
   const { user } = useAuth();
   const [fetchedUserData, setFetchedUserData] = useState<User>({
     height: "",
     weight: "",
     bmi: "",
+    firstName: "",
+    lastName: "",
   });
 
   const [userData, setUserData] = useState<User>({
     height: "",
     weight: "",
     bmi: "",
+    firstName: "",
+    lastName: "",
   });
 
   //   console.log(userData);
@@ -46,6 +52,8 @@ const UserSettingsPage = () => {
           height: data.height || "", // Ensure values are not undefined
           weight: data.weight || "",
           bmi: data.bmi || "",
+          firstName: user?.user_metadata?.firstName || "",
+          lastName: user?.user_metadata?.lastName || "",
         });
       } else {
         console.log(error);
@@ -55,6 +63,22 @@ const UserSettingsPage = () => {
   }, []);
 
   const inputs = [
+    {
+      label: "First Name",
+      placeholder: "Enter your first name",
+      value: userData.firstName, // Convert number to string
+      onChange: (text: string) =>
+        setUserData((prev) => ({ ...prev, firstName: text })),
+      keyboardType: "text",
+    },
+    {
+      label: "Last Name",
+      placeholder: "Enter your last name",
+      value: userData.lastName, // Convert number to string
+      onChange: (text: string) =>
+        setUserData((prev) => ({ ...prev, lastName: text })),
+      keyboardType: "text",
+    },
     {
       label: "Height",
       placeholder: "Enter your height",
@@ -90,6 +114,22 @@ const UserSettingsPage = () => {
       bmi: bmi,
     };
 
+    const newUserMetadata = {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+    };
+
+    const { data: userMetaData, error: userMetaDataError } =
+      await supabase.auth.updateUser({
+        data: newUserMetadata,
+      });
+
+    if (userMetaDataError) {
+      console.error("Error updating user metadata:", userMetaDataError.message);
+      alert("Failed to update user metadata!");
+      return;
+    }
+
     // Push data to Supabase
     const { data, error } = await supabase
       .from("profiles")
@@ -101,10 +141,9 @@ const UserSettingsPage = () => {
       alert("Failed to save BMI data!");
     } else {
       console.log("Data inserted successfully:", data);
-      alert("BMI data saved!");
+      alert("User Data saved!");
 
-      // Reset form
-      setUserData({ height: "", weight: "", bmi: "" });
+      router.replace("/(tabs)/settings");
     }
   };
   return (
@@ -130,6 +169,7 @@ const UserSettingsPage = () => {
             />
           </View>
         ))}
+
         <Button
           title="Save"
           // disabled={loading}
@@ -137,6 +177,13 @@ const UserSettingsPage = () => {
           buttonStyle={styles.button}
           onPress={() => countBmi()}
         />
+        <Button
+          onPress={() => router.push("/forget-password")}
+          containerStyle={styles.buttonContainer}
+          buttonStyle={styles.ChangePasswordContainer}
+        >
+          <Text style={styles.ChangePasswordText}>Change Password</Text>
+        </Button>
       </View>
     </ScrollView>
   );
@@ -180,11 +227,19 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
     borderRadius: 8,
-    padding: 10,
   },
   button: {
-    backgroundColor: "#4CD964",
+    backgroundColor: "#FFD700",
     borderRadius: 10,
     padding: 14,
+  },
+  ChangePasswordContainer: {
+    backgroundColor: "#333",
+    borderRadius: 10,
+    padding: 14,
+  },
+  ChangePasswordText: {
+    color: "#fff",
+    fontSize: 16,
   },
 });

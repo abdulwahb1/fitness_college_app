@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   workoutCardTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#FFD700",
     marginBottom: 8,
   },
   workoutCardDescription: {

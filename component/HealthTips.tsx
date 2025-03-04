@@ -53,7 +53,7 @@ const HealthTips = () => {
         {tips.map((tip) => (
           <TouchableOpacity key={tip.id} style={styles.card}>
             <View style={styles.iconContainer}>
-              <Feather name={tip.icon as any} size={24} color="#4CAF50" />
+              <Feather name={tip.icon as any} size={24} color="#FFD700" />
             </View>
             <View style={styles.contentContainer}>
               <Text style={styles.title}>{tip.title}</Text>

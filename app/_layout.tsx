@@ -67,6 +67,16 @@ export default function RootLayout() {
               headerTintColor: "#fff",
             }}
           />
+          <Stack.Screen
+            name="forget-password"
+            options={{
+              title: "Change Password",
+              headerStyle: {
+                backgroundColor: "#1a1a1a",
+              },
+              headerTintColor: "#fff",
+            }}
+          />
         </Stack>
       </AuthProvider>
     </>

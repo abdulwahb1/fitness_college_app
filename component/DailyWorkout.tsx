@@ -105,7 +105,7 @@ const DailyWorkout = () => {
               <View style={styles.workoutHeader}>
                 <Text style={styles.workoutTitle}>{workout.title}</Text>
                 {completed.includes(workout.id) && (
-                  <Feather name="check-circle" size={20} color="#4CAF50" />
+                  <Feather name="check-circle" size={20} color="#FFD700" />
                 )}
               </View>
               <Text style={styles.workoutDescription}>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: "100%",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#FFD700",
     borderRadius: 5,
   },
   progressText: {
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
   completedCard: {
     backgroundColor: "#F1F8E9",
-    borderColor: "#4CAF50",
+    borderColor: "#FFD700",
     borderWidth: 1,
   },
   workoutImage: {

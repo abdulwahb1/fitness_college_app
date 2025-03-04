@@ -9,7 +9,8 @@ export default function SignUpScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   async function signUpWithEmail() {
     setLoading(true);
     const {
@@ -20,7 +21,8 @@ export default function SignUpScreen() {
       password,
       options: {
         data: {
-          name,
+          firstName,
+          lastName,
         },
       },
     });
@@ -42,10 +44,18 @@ export default function SignUpScreen() {
         <View style={styles.form}>
           <TextInput
             style={styles.input}
-            placeholder="Name"
+            placeholder="First Name"
             placeholderTextColor="#666"
-            value={name}
-            onChangeText={setName}
+            value={firstName}
+            onChangeText={setFirstName}
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Last Name"
+            placeholderTextColor="#666"
+            value={lastName}
+            onChangeText={setLastName}
             autoCapitalize="none"
           />
           <TextInput
