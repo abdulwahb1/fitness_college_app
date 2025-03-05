@@ -15,7 +15,7 @@ import {
 import { ChevronRight } from "lucide-react-native";
 const Settings = () => {
   const router = useRouter();
-
+  const { user } = useAuth();
   const signOut = async () => {
     await supabase.auth.signOut();
     router.replace("/signin");
@@ -28,7 +28,9 @@ const Settings = () => {
             source={require("@/assets/images/male.png")}
             style={styles.profileImage}
           />
-          <Text style={styles.name}>Guest</Text>
+          <Text style={styles.name}>
+            {user?.user_metadata.firstName + " " + user?.user_metadata.lastName}
+          </Text>
         </View>
 
         <TouchableOpacity
